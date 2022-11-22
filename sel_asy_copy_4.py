@@ -4,6 +4,7 @@ from selenium.webdriver.chrome.options import Options
 import time
 from socket import timeout
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 import time
 import json
 import asyncio

@@ -187,7 +187,7 @@ if __name__ == "__main__":
     chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
     # driver = webdriver.Chrome(options=chrome_options, service=s)
     # driver = webdriver.Chrome(options=chrome_options,executable_path = 'C:\\browserdrivers\\chromedriver.exe')
-    driver = webdriver.Chrome(options=chrome_options,executable_path = '/home/ubuntu/selenium/chromedriver.exe')  
+    driver = webdriver.Chrome(options=chrome_options,executable_path = 'chromedriver.exe')  
     # driver = webdriver.Chrome(executable_path = 'chromedriver.exe')   
 
     quill_login(driver)
@@ -244,7 +244,7 @@ if __name__ == "__main__":
             first_word= all_words[-1]
             driver.switch_to.window(f"{first_word}")
             quil_content = driver.find_element(By.XPATH,'//*[@id="editable-content-within-article"]')
-            quil_file = open(r"/home/ubuntu/selenium/results"+str(first_word)+".csv",'w')
+            quil_file = open(r"/results"+str(first_word)+".csv",'w')
             quil_file.write(quil_content.text)
 
 

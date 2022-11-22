@@ -187,8 +187,13 @@ if __name__ == "__main__":
     chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
     # driver = webdriver.Chrome(options=chrome_options, service=s)
     # driver = webdriver.Chrome(options=chrome_options,executable_path = 'C:\\browserdrivers\\chromedriver.exe')
-    driver = webdriver.Chrome(options=chrome_options,executable_path = '/home/ubuntu/selenium/selenium/chromedriver')  
-    # driver = webdriver.Chrome(executable_path = 'chromedriver.exe')   
+    # driver = webdriver.Chrome(options=chrome_options,executable_path = '/home/ubuntu/selenium/selenium/chromedriver')  
+    # driver = webdriver.Chrome(executable_path = 'chromedriver.exe') 
+    driver_path = "/home/ubuntu/selenium/selenium/chromedriver"
+    s = Service(driver_path)
+    options = webdriver.ChromeOptions()
+    chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
+    driver = webdriver.Chrome(options=chrome_options, service=s)  
 
     quill_login(driver)
 

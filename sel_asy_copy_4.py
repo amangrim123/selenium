@@ -8,6 +8,7 @@ import requests
 import json
 import base64
 import time
+import asyncio
 import shutil
 #from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
@@ -137,7 +138,7 @@ if __name__ == "__main__":
 
 
     # Initialize connection pool
-    conn = aiohttp.TCPConnector(limit_per_host=100, limit=0, ttl_dns_cache=300)
+    # conn = aiohttp.TCPConnector(limit_per_host=100, limit=0, ttl_dns_cache=300)
     PARALLEL_REQUESTS = 100
     results = []
 
@@ -268,7 +269,7 @@ if __name__ == "__main__":
     # asyncio.run(gather_with_concurrency())
     loop = asyncio.get_event_loop()
     loop.run_until_complete(gather_with_concurrency())
-    conn.close()
+    # conn.close()
 
     duration = time.time() - start_time
 

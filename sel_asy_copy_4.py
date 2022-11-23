@@ -1,17 +1,14 @@
-from selenium import webdriver  
-from selenium.webdriver.common.keys import Keys  
-from selenium.webdriver.chrome.options import Options  
-import time
+from genericpath import isdir
 from socket import timeout
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
 import time
+import re
+import sys
+import requests
 import json
-import asyncio
+import base64
 import time
-import aiohttp
-import mysql.connector
-from bs4 import BeautifulSoup
+import shutil
 #from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
@@ -19,6 +16,17 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
+import os
+from fake_headers import Headers
+from os import listdir
+from os.path import isfile, join
+from sys import exit
+from bs4 import BeautifulSoup
+import codecs
+from selenium.webdriver.chrome.service import Service
+from selenium.common.exceptions import NoSuchElementException
+from datetime import datetime
+import mysql.connector
 
 def remove_non_ascii_1(data):
     return ''.join([i if ord(i) < 128 else ' ' for i in data])
@@ -170,6 +178,13 @@ if __name__ == "__main__":
         str1=process_soup(soup)
         containt_list.append(str1 + str(x[0]))   
 
+    driver_path=r'/usr/bin/chromedriver'
+#sitepath="D:\\work\\python\\webscrape\\"
+    header = Headers(
+        browser="chrome",  # Generate only Chrome UA
+        os="win",  # Generate only Windows platform
+        headers=False # generate misc headers
+    )
     chrome_options = Options()
     chrome_options.add_argument("--user-agent={customUserAgent}")
     chrome_options.add_argument("--window-size=1920,1080")
@@ -177,24 +192,16 @@ if __name__ == "__main__":
     chrome_options.add_argument("--proxy-server='direct://'")
     chrome_options.add_argument("--proxy-bypass-list=*")
     chrome_options.add_argument("--start-maximized")
-    # chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--headless')
     chrome_options.add_argument('--disable-gpu')
-    chrome_options.add_argument('--disable-dev-shm-usage') 
+    chrome_options.add_argument('--disable-dev-shm-usage')
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--ignore-certificate-errors')
     #driver = webdriver.Chrome(ChromeDriverManager().install(),chrome_options=chrome_options)
-    # s = Service(driver_path) 
-    options = webdriver.ChromeOptions()
-    chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
-    # driver = webdriver.Chrome(options=chrome_options, service=s)
-    # driver = webdriver.Chrome(options=chrome_options,executable_path = 'C:\\browserdrivers\\chromedriver.exe')
-    # driver = webdriver.Chrome(options=chrome_options,executable_path = '/home/ubuntu/selenium/selenium/chromedriver')  
-    # driver = webdriver.Chrome(executable_path = 'chromedriver.exe') 
-    driver_path = "/home/ubuntu/selenium/selenium/chromedriver"
     s = Service(driver_path)
     options = webdriver.ChromeOptions()
     chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
-    driver = webdriver.Chrome(options=chrome_options, service=s)  
+    driver = webdriver.Chrome(options=chrome_options, service=s)
 
     quill_login(driver)
 

@@ -18,7 +18,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 import os
-from fake_headers import Headers
+# from fake_headers import Headers
 from os import listdir
 from os.path import isfile, join
 from sys import exit
@@ -181,11 +181,11 @@ if __name__ == "__main__":
 
     driver_path=r'/usr/bin/chromedriver'
 #sitepath="D:\\work\\python\\webscrape\\"
-    header = Headers(
-        browser="chrome",  # Generate only Chrome UA
-        os="win",  # Generate only Windows platform
-        headers=False # generate misc headers
-    )
+    # header = Headers(             ++++++++++++++++++++++++++++comment 
+    #     browser="chrome",  # Generate only Chrome UA
+    #     os="win",  # Generate only Windows platform
+    #     headers=False # generate misc headers
+    # )
     chrome_options = Options()
     chrome_options.add_argument("--user-agent={customUserAgent}")
     chrome_options.add_argument("--window-size=1920,1080")

@@ -203,7 +203,7 @@ if __name__ == "__main__":
     s = Service(driver_path)
     options = webdriver.ChromeOptions()
     chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
-    driver = webdriver.Chrome(options=chrome_options, service=s)
+    driver = webdriver.Chrome(service=s)
     # driver = webdriver.Chrome(options=chrome_options, executable_path = driver_path)
 
     quill_login(driver)

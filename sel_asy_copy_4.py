@@ -263,7 +263,7 @@ if __name__ == "__main__":
 
 
 
-        time.sleep(120)
+        time.sleep(12)
         driver.quit()
 
     # asyncio.run(gather_with_concurrency())

@@ -179,7 +179,8 @@ if __name__ == "__main__":
         str1=process_soup(soup)
         containt_list.append(str1 + str(x[0]))   
 
-    driver_path=r'/usr/bin/chromedriver'
+    # driver_path=r'/usr/bin/chromedriver'
+    driver_path=r'/home/ubuntu/chromedriver'
 #sitepath="D:\\work\\python\\webscrape\\"
     # header = Headers(             ++++++++++++++++++++++++++++comment 
     #     browser="chrome",  # Generate only Chrome UA

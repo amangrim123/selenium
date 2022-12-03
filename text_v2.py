@@ -35,6 +35,6 @@ def selenium_title(url):
     driver.quit()
 
 
-links = ["https://www.amazon.com", "https://www.google.com","https://www.articulatesolution.com","https://quilbot.com/", "https://www.flipkart.com", "https://www.yahoo.com", "https://www.godaddy.com"]
+links = ["https://www.amazon.com", "https://www.google.com","https://www.articulatesolution.com","https://www.flipkart.com", "https://www.yahoo.com", "https://www.godaddy.com"]
 with futures.ThreadPoolExecutor() as executor: # default/optimized number of threads
   titles = list(executor.map(selenium_title, links))

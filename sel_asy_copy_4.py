@@ -179,16 +179,13 @@ if __name__ == "__main__":
         str1=process_soup(soup)
         containt_list.append(str1 + str(x[0]))   
 
-<<<<<<< HEAD
-    driver_path=r"/usr/bin/chromedriver"
+    driver_path="/usr/bin/chromedriver"
 #sitepath="D:\\work\\python\\webscrape\\"
     # header = Headers(     comment
-=======
     # driver_path=r'/usr/bin/chromedriver'
-    driver_path=r'/home/ubuntu/chromedriver'
+    # driver_path=r'/home/ubuntu/chromedriver'
 #sitepath="D:\\work\\python\\webscrape\\"
     # header = Headers(             ++++++++++++++++++++++++++++comment 
->>>>>>> 54ffd7cd47c1a043fb1a0ebe198bd1a1b6846310
     #     browser="chrome",  # Generate only Chrome UA
     #     os="win",  # Generate only Windows platform
     #     headers=False # generate misc headers
@@ -200,7 +197,7 @@ if __name__ == "__main__":
     chrome_options.add_argument("--proxy-server='direct://'")
     chrome_options.add_argument("--proxy-bypass-list=*")
     chrome_options.add_argument("--start-maximized")
-    # chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--headless')
     chrome_options.add_argument('--disable-gpu')
     chrome_options.add_argument('--disable-dev-shm-usage')
     chrome_options.add_argument('--no-sandbox')
@@ -268,8 +265,6 @@ if __name__ == "__main__":
             quil_content = driver.find_element(By.XPATH,'//*[@id="editable-content-within-article"]')
             quil_file = open(r"/results"+str(first_word)+".csv",'w')
             quil_file.write(quil_content.text)
-
-
 
         time.sleep(12)
         driver.quit()

@@ -179,9 +179,16 @@ if __name__ == "__main__":
         str1=process_soup(soup)
         containt_list.append(str1 + str(x[0]))   
 
+<<<<<<< HEAD
     driver_path=r"/usr/bin/chromedriver"
 #sitepath="D:\\work\\python\\webscrape\\"
     # header = Headers(     comment
+=======
+    # driver_path=r'/usr/bin/chromedriver'
+    driver_path=r'/home/ubuntu/chromedriver'
+#sitepath="D:\\work\\python\\webscrape\\"
+    # header = Headers(             ++++++++++++++++++++++++++++comment 
+>>>>>>> 54ffd7cd47c1a043fb1a0ebe198bd1a1b6846310
     #     browser="chrome",  # Generate only Chrome UA
     #     os="win",  # Generate only Windows platform
     #     headers=False # generate misc headers
@@ -193,7 +200,7 @@ if __name__ == "__main__":
     chrome_options.add_argument("--proxy-server='direct://'")
     chrome_options.add_argument("--proxy-bypass-list=*")
     chrome_options.add_argument("--start-maximized")
-    chrome_options.add_argument('--headless')
+    # chrome_options.add_argument('--headless')
     chrome_options.add_argument('--disable-gpu')
     chrome_options.add_argument('--disable-dev-shm-usage')
     chrome_options.add_argument('--no-sandbox')
@@ -202,7 +209,8 @@ if __name__ == "__main__":
     s = Service(driver_path)
     options = webdriver.ChromeOptions()
     chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
-    driver = webdriver.Chrome(options=chrome_options, service=s)
+    driver = webdriver.Chrome(service=s)
+    # driver = webdriver.Chrome(options=chrome_options, executable_path = driver_path)
 
     quill_login(driver)
 
@@ -263,7 +271,7 @@ if __name__ == "__main__":
 
 
 
-        time.sleep(120)
+        time.sleep(12)
         driver.quit()
 
     # asyncio.run(gather_with_concurrency())

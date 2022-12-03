@@ -3,6 +3,8 @@ import time
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 
+
+start_time = time.time()
 options = Options()
 
 options.headless = True
@@ -20,6 +22,8 @@ driver.quit()
 
 from selenium import webdriver
 from concurrent import futures
+
+
 def selenium_title(url):
     options = Options()
 
@@ -33,7 +37,7 @@ def selenium_title(url):
 
     driver.get(url)
     print(driver.title)
-    time.sleep(2)
+    time.sleep(60)
     driver.quit()
 
 
@@ -42,3 +46,7 @@ with futures.ThreadPoolExecutor() as executor: # default/optimized number of thr
   titles = list(executor.map(selenium_title, links))
 
 print(len(links))
+
+duration = time.time() - start_time
+
+print("time - " ,duration)

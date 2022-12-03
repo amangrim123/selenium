@@ -37,7 +37,6 @@ def selenium_title(url):
 
     driver.get(url)
     print(driver.title)
-    time.sleep(60)
     driver.quit()
 
 

@@ -1,4 +1,5 @@
 from selenium import webdriver
+import time
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 
@@ -36,6 +37,6 @@ def selenium_title(url):
     driver.quit()
 
 
-links = ["https://www.amazon.com", "https://www.google.com","https://www.articulatesolution.com","https://www.flipkart.com", "https://www.yahoo.com","https://www.amazon.com", "https://www.google.com","https://www.articulatesolution.com","https://www.flipkart.com", "https://www.yahoo.com",]
+links = ["https://google.com/","https://google.com/","https://google.com/","https://google.com/","https://google.com/","https://google.com/","https://google.com/","https://google.com/","https://google.com/","https://google.com/"]
 with futures.ThreadPoolExecutor() as executor: # default/optimized number of threads
   titles = list(executor.map(selenium_title, links))

@@ -67,7 +67,7 @@ def process_soup(soup):
         print("word count:-",len(str1.split()))
         return str1 
 
-def all_process(contain):
+def all_process(containt):
 
     def check_exists_by_xpath(xpath,driver):
         try:

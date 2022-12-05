@@ -280,8 +280,6 @@ if __name__ == "__main__":
         w12 =1
         i12 = multiprocessing.Process(target=all_process,args=(containt_list[start_google:end_google],))
         i12.start()
-    # p1.join()
-        i12.join()
     # p3.join()
     # p4.join()
 

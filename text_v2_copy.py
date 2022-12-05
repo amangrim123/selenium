@@ -7,7 +7,7 @@ from selenium.webdriver.chrome.service import Service
 import asyncio
 from concurrent.futures.thread import ThreadPoolExecutor
 from selenium import webdriver
-executor = ThreadPoolExecutor(10)
+executor = ThreadPoolExecutor(1000)
 def scrape(url, *, loop):
     loop.run_in_executor(executor, scraper, url)
 def scraper(url):
@@ -26,6 +26,6 @@ def scraper(url):
     driver.quit()
 
 loop = asyncio.get_event_loop()
-for url in ["https://www.google.com/search?q=godaddy"] * 10:
+for url in ["https://www.google.com/search?q=godaddy"] * 1000:
     scrape(url, loop=loop)
 loop.run_until_complete(asyncio.gather(*asyncio.all_tasks(loop)))

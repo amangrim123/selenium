@@ -262,20 +262,28 @@ if __name__ == "__main__":
 
     # all_process(containt_list)
 
-    p1 = multiprocessing.Process(target=all_process,args=(containt_list,))
-    p2 = multiprocessing.Process(target=all_process,args=(containt_list,))
-    p3 = multiprocessing.Process(target=all_process,args=(containt_list,))
-    p4 = multiprocessing.Process(target=all_process,args=(containt_list,))
+    a12 = len(containt_list)/4
+    b12 = len(containt_list)%4
 
-    p1.start()
-    p2.start()
-    p3.start()
-    p4.start()
 
-    p1.join()
-    p2.join()
-    p3.join()
-    p4.join()
+    if  b12 != 0:
+        c12 = a + 1
+    else:
+        c12 = a12
+
+    w12 = 0
+
+    for i12 in range(int(c12)):
+        start_google = (i12*4)
+        end_google = (i12+1)*4
+        print(start_google ,"==",end_google)
+        w12 =1
+        p2 = multiprocessing.Process(target=all_process,args=(containt_list[start_google:end_google],))
+        p2.start()
+    # p1.join()
+    # p2.join()
+    # p3.join()
+    # p4.join()
 
     # executor = ThreadPoolExecutor(10)
     # def scrape(url, *, loop):

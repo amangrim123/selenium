@@ -244,7 +244,7 @@ if __name__ == "__main__":
             first_word= all_words[-1]
             driver.switch_to.window(f"{first_word}")
             quil_content = driver.find_element(By.XPATH,'//*[@id="editable-content-within-article"]')
-            quil_file = open(r"a\results"+str(first_word)+".csv",'w')
+            quil_file = open(r"results"+str(first_word)+".csv",'w')
             quil_file.write(quil_content.text)
 
 

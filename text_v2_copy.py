@@ -8,6 +8,7 @@ import asyncio
 from concurrent.futures.thread import ThreadPoolExecutor
 from selenium import webdriver
 executor = ThreadPoolExecutor(1000)
+n=1
 def scrape(url, *, loop):
     loop.run_in_executor(executor, scraper, url)
 def scraper(url):
@@ -22,6 +23,8 @@ def scraper(url):
     driver = webdriver.Chrome(options=options,service=s)
 
     driver.get(url)
+    n=n+1
+    print(n)
     print(driver.title)
     driver.quit()
 

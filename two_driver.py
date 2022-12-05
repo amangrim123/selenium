@@ -24,7 +24,7 @@ def remove_non_ascii_1(data):
     return ''.join([i if ord(i) < 128 else ' ' for i in data])
 
 
-def check_exists_by_xpath(xpath):
+def check_exists_by_xpath(xpath,driver):
     try:
         #driver.find_element_by_xpath(xpath)
         driver.find_element(by=By.XPATH, value=xpath)

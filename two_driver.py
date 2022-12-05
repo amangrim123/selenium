@@ -278,10 +278,10 @@ if __name__ == "__main__":
         end_google = (i12+1)*4
         print(start_google ,"==",end_google)
         w12 =1
-        p2 = multiprocessing.Process(target=all_process,args=(containt_list[start_google:end_google],))
-        p2.start()
+        i12 = multiprocessing.Process(target=all_process,args=(containt_list[start_google:end_google],))
+        i12.start()
     # p1.join()
-    # p2.join()
+        i12.join()
     # p3.join()
     # p4.join()
 

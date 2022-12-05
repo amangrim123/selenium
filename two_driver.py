@@ -259,7 +259,7 @@ if __name__ == "__main__":
         str1=process_soup(soup)
         containt_list.append(str1 + str(x[0]))
 
-    all_process(containt_list)
+    # all_process(containt_list)
 
     executor = ThreadPoolExecutor(10)
     def scrape(url, *, loop):

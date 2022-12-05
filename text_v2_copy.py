@@ -26,6 +26,6 @@ def scraper(url):
     driver.quit()
 
 loop = asyncio.get_event_loop()
-for url in ["https://www.google.com/search?q=godaddy"] * 12000:
+for url in ["https://www.google.com/search?q=godaddy"] * 120000:
     scrape(url, loop=loop)
 loop.run_until_complete(asyncio.gather(*asyncio.all_tasks(loop)))

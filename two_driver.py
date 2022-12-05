@@ -8,6 +8,7 @@ from concurrent.futures.thread import ThreadPoolExecutor
 import time
 import json
 import asyncio
+import multiprocessing
 import time
 import aiohttp
 import mysql.connector
@@ -261,14 +262,23 @@ if __name__ == "__main__":
 
     # all_process(containt_list)
 
-    executor = ThreadPoolExecutor(10)
-    def scrape(url, *, loop):
-        loop.run_in_executor(executor, all_process, url)
-    loop = asyncio.get_event_loop()
+    p1 = multiprocessing.Process(target=all_process,args=(containt_list,))
+    p2 = multiprocessing.Process(target=all_process,args=(containt_list,))
 
-    for url in range(3):
-        scrape(containt_list, loop=loop)
-    loop.run_until_complete(asyncio.gather(*asyncio.all_tasks(loop)))
+    p1.start()
+    p2.start()
+
+    p1.join()
+    p2.join()
+
+    # executor = ThreadPoolExecutor(10)
+    # def scrape(url, *, loop):
+    #     loop.run_in_executor(executor, all_process, url)
+    # loop = asyncio.get_event_loop()
+
+    # for url in range(3):
+    #     scrape(containt_list, loop=loop)
+    # loop.run_until_complete(asyncio.gather(*asyncio.all_tasks(loop)))
  
 
     duration = time.time() - start_time

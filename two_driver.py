@@ -4,6 +4,7 @@ from selenium.webdriver.chrome.options import Options
 import time
 from socket import timeout
 from selenium import webdriver
+from concurrent.futures.thread import ThreadPoolExecutor
 import time
 import json
 import asyncio
@@ -258,7 +259,17 @@ if __name__ == "__main__":
         str1=process_soup(soup)
         containt_list.append(str1 + str(x[0]))
 
-    all_process(containt_list) 
+    all_process(containt_list)
+
+    executor = ThreadPoolExecutor(10)
+    def scrape(url, *, loop):
+        loop.run_in_executor(executor, all_process, url)
+    loop = asyncio.get_event_loop()
+
+    for url in range(3):
+        scrape(containt_list, loop=loop)
+    loop.run_until_complete(asyncio.gather(*asyncio.all_tasks(loop)))
+ 
 
     duration = time.time() - start_time
 

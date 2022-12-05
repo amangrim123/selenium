@@ -62,7 +62,7 @@ def quill_login(driver):
     #driver.find_element_by_xpath("//*[@id='loginContainer']/div/div[6]/button").click()
     driver.find_element(by=By.XPATH, value="/html/body/div[1]/div[2]/div[3]/section[1]/div/div/div/div/div/div[3]/div/div[5]/button").click()
     #time.sleep(5)
-    status = check_exists_by_xpath('//div[contains(@class,"MuiDialogContent-root")]/button')
+    status = check_exists_by_xpath('//div[contains(@class,"MuiDialogContent-root")]/button',driver)
     if(status):
         #element=driver.find_element_by_xpath('//div[contains(@class,"MuiDialogContent-root")]/button')
         element=driver.find_element(by=By.XPATH, value='//div[contains(@class,"MuiDialogContent-root")]/button')

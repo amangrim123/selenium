@@ -6,7 +6,6 @@ from socket import timeout
 from selenium import webdriver
 import time
 import json
-from selenium.webdriver.chrome.service import Service
 import asyncio
 import time
 import aiohttp
@@ -19,13 +18,13 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
-from multiprocessing import Process
+from selenium.webdriver.chrome.service import Service
 
 def remove_non_ascii_1(data):
     return ''.join([i if ord(i) < 128 else ' ' for i in data])
 
 
-def check_exists_by_xpath(xpath,driver):
+def check_exists_by_xpath(xpath):
     try:
         #driver.find_element_by_xpath(xpath)
         driver.find_element(by=By.XPATH, value=xpath)
@@ -114,184 +113,7 @@ def quill_login(driver):
         print(status)
         driver.execute_script("arguments[0].click();", element) 
 
-    time.sleep(4)  
-
-
-def funct1(contants): 
-    conn = aiohttp.TCPConnector(limit_per_host=100, limit=0, ttl_dns_cache=300)
-    PARALLEL_REQUESTS = 100
-    chrome_options = Options()
-    chrome_options.add_argument("--user-agent={customUserAgent}")
-    chrome_options.add_argument("--window-size=1920,1080")
-    chrome_options.add_argument("--disable-extensions")
-    chrome_options.add_argument("--proxy-server='direct://'")
-    chrome_options.add_argument("--proxy-bypass-list=*")
-    chrome_options.add_argument("--start-maximized")
-    # chrome_options.add_argument('--headless')
-    chrome_options.add_argument('--disable-gpu')
-    chrome_options.add_argument('--disable-dev-shm-usage') 
-    chrome_options.add_argument('--no-sandbox')
-    chrome_options.add_argument('--ignore-certificate-errors')
-    driver_path ="/usr/bin/chromedriver"
-    #driver = webdriver.Chrome(ChromeDriverManager().install(),chrome_options=chrome_options)
-    s = Service(driver_path) 
-    options = webdriver.ChromeOptions()
-    chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
-    driver = webdriver.Chrome(options=chrome_options, service=s)
-    # driver = webdriver.Chrome(options=chrome_options,executable_path = 'C:\\browserdrivers\\chromedriver.exe')
-    # driver = webdriver.Chrome(options=chrome_options,executable_path = 'chromedriver.exe')   
-    # driver = webdriver.Chrome(executable_path = 'chromedriver.exe')   
-
-    quill_login(driver)
-
-    async def gather_with_concurrency():
-
-        async def geta(url,driver):
-            all_words = url.split()
-            first_word= all_words[-1]
-            print(first_word)
-            driver.execute_script(f'''window.open('https://quillbot.com/','{first_word}');''')
-            await asyncio.sleep(3)
-
-            driver.switch_to.window(f"{first_word}")
-            # time.sleep(1.5)
-            # try:
-            #     driver.find_element(By.XPATH,'/html/body/div[6]/div[3]/div/div[1]/button').click()
-            # except:
-            #     pass 
-            driver.find_element(By.XPATH,'//*[@id="inputText"]').clear()
-            # time.sleep(1.5)
-            # try:
-            #     driver.find_element(By.XPATH,'/html/body/div[6]/div[3]/div/div[1]/button').click()
-            # except:
-            #     pass 
-            driver.find_element(By.XPATH,'//*[@id="inputText"]').send_keys(url)
-            # time.sleep(1.5)
-            # try:
-            #     driver.find_element(By.XPATH,'/html/body/div[6]/div[3]/div/div[1]/button').click()
-            # except:
-            #     pass 
-            
-            driver.find_element(By.XPATH,'//*[@id="InputBottomQuillControl"]/div/div/div/div[2]/div/div/div/div/button').click()
-            # time.sleep(1.5)
-            # try:
-            #     driver.find_element(By.XPATH,'/html/body/div[6]/div[3]/div/div[1]/button').click()
-            # except:
-            #     pass 
-            delay = 300
-            await asyncio.sleep(2)
-            myElem = WebDriverWait(driver,delay).until(EC.presence_of_element_located((By.XPATH, '//*[@id="InputBottomQuillControl"]/div/div/div/div[2]/div/div/div/div/button/div[text()="Rephrase"]')))
-            if myElem:
-                print("yes")
-            #     quil_content = driver.find_element(By.XPATH,'//*[@id="editable-content-within-article"]')
-            #     quil_file = open(r"results"+str(first_word)+".csv",'w')
-            #     quil_file.write(quil_content.text)
-            #     time.sleep(3)
-
-        await asyncio.gather(*(geta(url,driver) for url in contants))
-        for ee in contants:
-            all_words = ee.split()
-            first_word= all_words[-1]
-            driver.switch_to.window(f"{first_word}")
-            quil_content = driver.find_element(By.XPATH,'//*[@id="editable-content-within-article"]')
-            quil_file = open(r"b\results"+str(first_word)+".csv",'w')
-            quil_file.write(quil_content.text)
-        driver.quit()
-
-    # asyncio.run(gather_with_concurrency())
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(gather_with_concurrency())
-    conn.close()
-
-def funct2(contants):
-    conn = aiohttp.TCPConnector(limit_per_host=100, limit=0, ttl_dns_cache=300)
-    PARALLEL_REQUESTS = 100
-    chrome_options = Options()
-    chrome_options.add_argument("--user-agent={customUserAgent}")
-    chrome_options.add_argument("--window-size=1920,1080")
-    chrome_options.add_argument("--disable-extensions")
-    chrome_options.add_argument("--proxy-server='direct://'")
-    chrome_options.add_argument("--proxy-bypass-list=*")
-    chrome_options.add_argument("--start-maximized")
-    # chrome_options.add_argument('--headless')
-    chrome_options.add_argument('--disable-gpu')
-    chrome_options.add_argument('--disable-dev-shm-usage') 
-    chrome_options.add_argument('--no-sandbox')
-    chrome_options.add_argument('--ignore-certificate-errors')
-    #driver = webdriver.Chrome(ChromeDriverManager().install(),chrome_options=chrome_options)
-    driver_path ="/usr/bin/chromedriver"
-    s = Service(driver_path) 
-    options = webdriver.ChromeOptions()
-    chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
-    driver = webdriver.Chrome(options=chrome_options, service=s)
-    # driver = webdriver.Chrome(options=chrome_options,executable_path = 'C:\\browserdrivers\\chromedriver.exe')
-    # driver = webdriver.Chrome(options=chrome_options,executable_path = 'chromedriver.exe')   
-    # driver = webdriver.Chrome(executable_path = 'chromedriver.exe')   
-
-    quill_login(driver)
-
-    async def gather_with_concurrency():
-
-        async def geta(url,driver):
-            all_words = url.split()
-            first_word= all_words[-1]
-            print(first_word)
-            driver.execute_script(f'''window.open('https://quillbot.com/','{first_word}');''')
-            await asyncio.sleep(3)
-
-            driver.switch_to.window(f"{first_word}")
-            # time.sleep(1.5)
-            # try:
-            #     driver.find_element(By.XPATH,'/html/body/div[6]/div[3]/div/div[1]/button').click()
-            # except:
-            #     pass 
-            driver.find_element(By.XPATH,'//*[@id="inputText"]').clear()
-            # time.sleep(1.5)
-            # try:
-            #     driver.find_element(By.XPATH,'/html/body/div[6]/div[3]/div/div[1]/button').click()
-            # except:
-            #     pass 
-            driver.find_element(By.XPATH,'//*[@id="inputText"]').send_keys(url)
-            # time.sleep(1.5)
-            # try:
-            #     driver.find_element(By.XPATH,'/html/body/div[6]/div[3]/div/div[1]/button').click()
-            # except:
-            #     pass 
-            
-            driver.find_element(By.XPATH,'//*[@id="InputBottomQuillControl"]/div/div/div/div[2]/div/div/div/div/button').click()
-            # time.sleep(1.5)
-            # try:
-            #     driver.find_element(By.XPATH,'/html/body/div[6]/div[3]/div/div[1]/button').click()
-            # except:
-            #     pass 
-            delay = 120
-            await asyncio.sleep(2)
-            myElem = WebDriverWait(driver,delay).until(EC.presence_of_element_located((By.XPATH, '//*[@id="InputBottomQuillControl"]/div/div/div/div[2]/div/div/div/div/button/div[text()="Rephrase"]')))
-            
-            if myElem:
-                print("yes")
-            #     quil_content = driver.find_element(By.XPATH,'//*[@id="editable-content-within-article"]')
-            #     quil_file = open("asd"+str(first_word)+".csv",'w')
-            #     quil_file.write(quil_content.text)
-            #     time.sleep(1)
-
-        await asyncio.gather(*(geta(url,driver) for url in contants))
-
-        for ee in contants:
-            all_words = ee.split()
-            first_word= all_words[-1]
-            driver.switch_to.window(f"{first_word}")
-            quil_content = driver.find_element(By.XPATH,'//*[@id="editable-content-within-article"]')
-            quil_file = open(r"a\results"+str(first_word)+".csv",'w')
-            quil_file.write(quil_content.text)
-
-        driver.quit()
-
-    # asyncio.run(gather_with_concurrency())
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(gather_with_concurrency())
-    conn.close()
-
+    time.sleep(4)           
 
 
 if __name__ == "__main__":
@@ -348,16 +170,96 @@ if __name__ == "__main__":
         str1=process_soup(soup)
         containt_list.append(str1 + str(x[0]))   
 
-    
-    p = Process(target=funct1, args=(containt_list,))
-    p.start()
-    p1 = Process(target=funct2, args=(containt_list,))
-    p1.start()
-    p.join()
-    p1.join()
+    chrome_options = Options()
+    chrome_options.add_argument("--user-agent={customUserAgent}")
+    chrome_options.add_argument("--window-size=1920,1080")
+    chrome_options.add_argument("--disable-extensions")
+    chrome_options.add_argument("--proxy-server='direct://'")
+    chrome_options.add_argument("--proxy-bypass-list=*")
+    chrome_options.add_argument("--start-maximized")
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--disable-gpu')
+    chrome_options.add_argument('--disable-dev-shm-usage') 
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--ignore-certificate-errors')
+    #driver = webdriver.Chrome(ChromeDriverManager().install(),chrome_options=chrome_options)
+    driver_path ="/usr/bin/chromedriver"
+    s = Service(driver_path)
+    options = webdriver.ChromeOptions()
+    chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
+    driver = webdriver.Chrome(service=s,options=chrome_options) 
+    # driver = webdriver.Chrome(executable_path = 'chromedriver.exe')   
+
+    quill_login(driver)
+
+    async def gather_with_concurrency():
+
+        async def geta(url,driver):
+            all_words = url.split()
+            first_word= all_words[-1]
+            print(first_word)
+            driver.execute_script(f'''window.open('https://quillbot.com/','{first_word}');''')
+            await asyncio.sleep(3)
+
+            driver.switch_to.window(f"{first_word}")
+            # time.sleep(1.5)
+            # try:
+            #     driver.find_element(By.XPATH,'/html/body/div[6]/div[3]/div/div[1]/button').click()
+            # except:
+            #     pass 
+            driver.find_element(By.XPATH,'//*[@id="inputText"]').clear()
+            # time.sleep(1.5)
+            # try:
+            #     driver.find_element(By.XPATH,'/html/body/div[6]/div[3]/div/div[1]/button').click()
+            # except:
+            #     pass 
+            driver.find_element(By.XPATH,'//*[@id="inputText"]').send_keys(url)
+            # time.sleep(1.5)
+            # try:
+            #     driver.find_element(By.XPATH,'/html/body/div[6]/div[3]/div/div[1]/button').click()
+            # except:
+            #     pass 
+            
+            driver.find_element(By.XPATH,'//*[@id="InputBottomQuillControl"]/div/div/div/div[2]/div/div/div/div/button').click()
+            # time.sleep(1.5)
+            # try:
+            #     driver.find_element(By.XPATH,'/html/body/div[6]/div[3]/div/div[1]/button').click()
+            # except:
+            #     pass 
+            delay = 30
+            await asyncio.sleep(2)
+            myElem = WebDriverWait(driver,delay).until(EC.presence_of_element_located((By.XPATH, '//*[@id="InputBottomQuillControl"]/div/div/div/div[2]/div/div/div/div/button/div[text()="Rephrase"]')))
+            if myElem:
+                print("yes")
+            #     quil_content = driver.find_element(By.XPATH,'//*[@id="editable-content-within-article"]')
+            #     quil_file = open("results"+str(first_word)+".csv",'w')
+            #     quil_file.write(quil_content.text)
+            #     time.sleep(3)
+            # await asyncio.sleep(2)    
+
+        await asyncio.gather(*(geta(url,driver) for url in containt_list))
+
+        for ee in containt_list:
+            all_words = ee.split()
+            first_word= all_words[-1]
+            driver.switch_to.window(f"{first_word}")
+            quil_content = driver.find_element(By.XPATH,'//*[@id="editable-content-within-article"]')
+            quil_file = open(r"a\results"+str(first_word)+".csv",'w')
+            quil_file.write(quil_content.text)
+
+
+
+        time.sleep(12)
+        driver.quit()
+
+    # asyncio.run(gather_with_concurrency())
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(gather_with_concurrency())
+    conn.close()
+
     duration = time.time() - start_time
 
-    # print(f"Completed {len(containt_list)} requests with {len(results)} results")
+    print(f"Completed {len(containt_list)} requests with {len(results)} results")
 
     print(f"finish within = {duration} seconds" )
 

@@ -276,8 +276,8 @@ if __name__ == "__main__":
     pool = multiprocessing.Pool()
 
     for i12 in range(int(c12)):
-        start_google = (i12*4)
-        end_google = (i12+1)*4
+        start_google = (i12*5)
+        end_google = (i12+1)*5
         print(start_google ,"==",end_google)
         w12 =1
         i12 = multiprocessing.Process(target=all_process,args=(containt_list[start_google:end_google],)).start()

@@ -125,7 +125,7 @@ def all_process(containt):
     chrome_options.add_argument("--proxy-server='direct://'")
     chrome_options.add_argument("--proxy-bypass-list=*")
     chrome_options.add_argument("--start-maximized")
-    chrome_options.add_argument('--headless')
+    # chrome_options.add_argument('--headless')
     chrome_options.add_argument('--disable-gpu')
     chrome_options.add_argument('--disable-dev-shm-usage') 
     chrome_options.add_argument('--no-sandbox')
@@ -135,8 +135,8 @@ def all_process(containt):
     s = Service(driver_path)
     options = webdriver.ChromeOptions()
     chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
-    driver = webdriver.Chrome(service=s,options=chrome_options) 
-    # driver = webdriver.Chrome(executable_path = 'chromedriver.exe')   
+    # driver = webdriver.Chrome(service=s,options=chrome_options) 
+    driver = webdriver.Chrome(options=chrome_options,executable_path = 'chromedriver.exe')   
 
     quill_login(driver)
 
@@ -203,7 +203,7 @@ def all_process(containt):
     # asyncio.run(gather_with_concurrency())
     loop = asyncio.get_event_loop()
     loop.run_until_complete(gather_with_concurrency())
-    # conn.close()        
+    # conn.close()         
 
 
 if __name__ == "__main__":

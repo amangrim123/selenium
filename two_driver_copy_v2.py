@@ -193,9 +193,9 @@ def all_process(containt,db):
             all_words = ee.split()
             first_word= all_words[-1]
             driver.switch_to.window(f"{first_word}")
-            quil_content = driver.find_element(By.XPATH,'//*[@id="editable-content-within-article"]')
+            quil_content = driver.find_element(By.XPATH,'//*[@id="editable-content-within-article"]').text
             mycursor1 = db.cursor()
-            mycursor1.execute("update bulk_feed_content set content_modify=%s,status=1 where bfc_id=%s", (str(quil_content.text),first_word))
+            mycursor1.execute("update bulk_feed_content set content_modify=%s,status=1 where bfc_id=%s", (str(quil_content),first_word))
             db.commit()
 
             # quil_file = open(r"a/results"+str(first_word)+".csv",'w')

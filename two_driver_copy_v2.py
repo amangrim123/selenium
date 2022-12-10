@@ -125,7 +125,7 @@ def all_process(containt):
     chrome_options.add_argument("--proxy-server='direct://'")
     chrome_options.add_argument("--proxy-bypass-list=*")
     chrome_options.add_argument("--start-maximized")
-    # chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--headless')
     chrome_options.add_argument('--disable-gpu')
     chrome_options.add_argument('--disable-dev-shm-usage') 
     chrome_options.add_argument('--no-sandbox')
@@ -135,8 +135,8 @@ def all_process(containt):
     s = Service(driver_path)
     options = webdriver.ChromeOptions()
     chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
-    # driver = webdriver.Chrome(service=s,options=chrome_options) 
-    driver = webdriver.Chrome(options=chrome_options,executable_path = 'chromedriver.exe')   
+    driver = webdriver.Chrome(service=s,options=chrome_options) 
+    # driver = webdriver.Chrome(executable_path = 'chromedriver.exe')   
 
     quill_login(driver)
 
@@ -192,7 +192,7 @@ def all_process(containt):
             first_word= all_words[-1]
             driver.switch_to.window(f"{first_word}")
             quil_content = driver.find_element(By.XPATH,'//*[@id="editable-content-within-article"]')
-            quil_file = open(r"results"+str(first_word)+".csv",'w')
+            quil_file = open(r"a/results"+str(first_word)+".csv",'w')
             quil_file.write(quil_content.text)
 
 
@@ -203,7 +203,7 @@ def all_process(containt):
     # asyncio.run(gather_with_concurrency())
     loop = asyncio.get_event_loop()
     loop.run_until_complete(gather_with_concurrency())
-    # conn.close()         
+    # conn.close()        
 
 
 if __name__ == "__main__":
@@ -258,7 +258,8 @@ if __name__ == "__main__":
         ### <figure> Tags
 
         str1=process_soup(soup)
-        containt_list.append(str1 + str(x[0]))
+        if (len(str1.split())) < 1000 :
+            containt_list.append(str1 + str(x[0]))
 
     # all_process(containt_list)
 

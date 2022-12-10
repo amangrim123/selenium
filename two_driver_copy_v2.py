@@ -102,6 +102,7 @@ def all_process(containt):
         except TimeoutException:
             print("2Loading took too much time!")
         #password = driver.find_element_by_xpath("//*[@id='mui-4']")
+        time.sleep(3)
         password = driver.find_element(by=By.XPATH, value="/html/body/div[1]/div[2]/div[3]/section[1]/div/div/div/div/div/div[3]/div/div[4]/div/div/input")
         password.clear()
         password.send_keys(quill_pwd)
@@ -148,7 +149,7 @@ def all_process(containt):
             print(first_word)
             acontaint = acontaint.replace(first_word,' ')
             driver.execute_script(f'''window.open('https://quillbot.com/','{first_word}');''')
-            await asyncio.sleep(3)
+            await asyncio.sleep(5)
 
             driver.switch_to.window(f"{first_word}")
             # time.sleep(1.5)
@@ -176,7 +177,7 @@ def all_process(containt):
             # except:
             #     pass 
             delay = 30
-            await asyncio.sleep(2)
+            await asyncio.sleep(5)
             myElem = WebDriverWait(driver,delay).until(EC.presence_of_element_located((By.XPATH, '//*[@id="InputBottomQuillControl"]/div/div/div/div[2]/div/div/div/div/button/div[text()="Rephrase"]')))
             if myElem:
                 print("yes")
@@ -291,7 +292,7 @@ if __name__ == "__main__":
         end_google = (i12+1)*4
         print(start_google ,"==",end_google)
         i12 = multiprocessing.Process(target=all_process,args=(containt_list[start_google:end_google],)).start()
-        time.sleep(1)
+        time.sleep(2)
 
     ###################### For large Containt #############################
     # for ii12 in range(int(large_c12)):

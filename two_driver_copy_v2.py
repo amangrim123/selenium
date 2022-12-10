@@ -142,10 +142,11 @@ def all_process(containt):
 
     async def gather_with_concurrency():
 
-        async def geta(url,driver):
-            all_words = url.split()
+        async def geta(acontaint,driver):
+            all_words = acontaint.split()
             first_word= all_words[-1]
             print(first_word)
+            acontaint = acontaint.replace(first_word,' ')
             driver.execute_script(f'''window.open('https://quillbot.com/','{first_word}');''')
             await asyncio.sleep(3)
 
@@ -161,7 +162,7 @@ def all_process(containt):
             #     driver.find_element(By.XPATH,'/html/body/div[6]/div[3]/div/div[1]/button').click()
             # except:
             #     pass 
-            driver.find_element(By.XPATH,'//*[@id="inputText"]').send_keys(url)
+            driver.find_element(By.XPATH,'//*[@id="inputText"]').send_keys(acontaint)
             # time.sleep(1.5)
             # try:
             #     driver.find_element(By.XPATH,'/html/body/div[6]/div[3]/div/div[1]/button').click()

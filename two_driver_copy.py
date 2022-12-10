@@ -281,6 +281,7 @@ if __name__ == "__main__":
         print(start_google ,"==",end_google)
         w12 =1
         i12 = multiprocessing.Process(target=all_process,args=(containt_list[start_google:end_google],)).start()
+        time.sleep(2)
     pool.close()    
     # p3.join()
     # p4.join()

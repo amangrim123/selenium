@@ -293,7 +293,6 @@ if __name__ == "__main__":
         print(start_google ,"==",end_google)
         i12 = multiprocessing.Process(target=all_process,args=(containt_list[start_google:end_google],)).start()
         time.sleep(3)
-        i12.join()
 
     ###################### For large Containt #############################
     # for ii12 in range(int(large_c12)):

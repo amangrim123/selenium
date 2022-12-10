@@ -292,14 +292,14 @@ if __name__ == "__main__":
         print(start_google ,"==",end_google)
         i12 = multiprocessing.Process(target=all_process,args=(containt_list[start_google:end_google],)).start()
         time.sleep(1)
-        
+
     ###################### For large Containt #############################
-    for ii12 in range(int(large_c12)):
-        start_index = (ii12*2)
-        end_index = (ii12+1)*2
-        print(start_google ,"==",end_google)
-        ii12 = multiprocessing.Process(target=all_process,args=(large_containt_list[start_index:end_index],)).start()
-        time.sleep(1)    
+    # for ii12 in range(int(large_c12)):
+    #     start_index = (ii12*2)
+    #     end_index = (ii12+1)*2
+    #     print(start_google ,"==",end_google)
+    #     ii12 = multiprocessing.Process(target=all_process,args=(large_containt_list[start_index:end_index],)).start()
+    #     time.sleep(1)    
 
     pool.close()    
     # p3.join()

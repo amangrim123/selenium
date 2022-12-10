@@ -249,6 +249,7 @@ if __name__ == "__main__":
 
 
     containt_list = []
+    large_containt_list =[]
     print(mycursor.rowcount, "record fetched.")
     for x in alll:
         
@@ -261,11 +262,16 @@ if __name__ == "__main__":
         str1=process_soup(soup)
         if (len(str1.split())) < 1000 :
             containt_list.append(str1 + str(x[0]))
+        else:
+            large_containt_list.append(str1 + str(x[0]))
 
     # all_process(containt_list)
 
     a12 = len(containt_list)/4
     b12 = len(containt_list)%4
+
+    large_a12 = len(large_containt_list)/2
+    large_b12 = len(large_containt_list)%2
 
 
     if  b12 != 0:
@@ -273,7 +279,10 @@ if __name__ == "__main__":
     else:
         c12 = a12
 
-    w12 = 0
+    if  large_b12 != 0:
+        large_c12 = large_a12 + 1
+    else:
+        large_c12 = large_a12    
 
     pool = multiprocessing.Pool()
 
@@ -281,9 +290,17 @@ if __name__ == "__main__":
         start_google = (i12*4)
         end_google = (i12+1)*4
         print(start_google ,"==",end_google)
-        w12 =1
         i12 = multiprocessing.Process(target=all_process,args=(containt_list[start_google:end_google],)).start()
         time.sleep(1)
+        
+    ###################### For large Containt #############################
+    for ii12 in range(int(large_c12)):
+        start_index = (ii12*2)
+        end_index = (ii12+1)*2
+        print(start_google ,"==",end_google)
+        ii12 = multiprocessing.Process(target=all_process,args=(large_containt_list[start_index:end_index],)).start()
+        time.sleep(1)    
+
     pool.close()    
     # p3.join()
     # p4.join()

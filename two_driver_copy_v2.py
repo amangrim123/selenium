@@ -69,7 +69,7 @@ def process_soup(soup):
         print("word count:-",len(str1.split()))
         return str1 
 
-def all_process(containt):
+def all_process(containt,db):
 
     def check_exists_by_xpath(xpath,driver):
         try:
@@ -194,8 +194,12 @@ def all_process(containt):
             first_word= all_words[-1]
             driver.switch_to.window(f"{first_word}")
             quil_content = driver.find_element(By.XPATH,'//*[@id="editable-content-within-article"]')
-            quil_file = open(r"a/results"+str(first_word)+".csv",'w')
-            quil_file.write(quil_content.text)
+            mycursor1 = db.cursor()
+            mycursor1.execute("update bulk_feed_content set content_modify=%s,status=1 where bfc_id=%s", (str(quil_content),x[first_word]))
+            db.commit()
+
+            # quil_file = open(r"a/results"+str(first_word)+".csv",'w')
+            # quil_file.write(quil_content.text)
 
 
 
@@ -291,7 +295,7 @@ if __name__ == "__main__":
         start_google = (i12*4)
         end_google = (i12+1)*4
         print(start_google ,"==",end_google)
-        i12 = multiprocessing.Process(target=all_process,args=(containt_list[start_google:end_google],)).start()
+        i12 = multiprocessing.Process(target=all_process,args=(containt_list[start_google:end_google],mydb,)).start()
         time.sleep(3)
 
     ###################### For large Containt #############################

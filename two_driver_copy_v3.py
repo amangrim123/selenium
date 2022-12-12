@@ -212,7 +212,7 @@ def all_process(containt,db):
             driver.switch_to.window(f"{first_word}")
             quil_content = driver.find_element(By.XPATH,'//*[@id="editable-content-within-article"]').text
 
-            mycursor2.execute("SELECT content FROM bulk_feed_content where bfc_id=%s and status is Null ",(first_word))
+            mycursor2.execute("SELECT content FROM bulk_feed_content where bfc_id=%s,status is Null ",(first_word))
             
             webs = mycursor2.fetchall()
             newdata1=remove_non_ascii_1(webs[0])

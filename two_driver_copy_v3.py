@@ -219,7 +219,7 @@ def all_process(containt,db):
             # print("containt = ",webs[0])
             newdata1=remove_non_ascii_2(webs[0])
             print("news = ",newdata1)
-            soup1 = BeautifulSoup(newdata1, 'html.parser')
+            soup1 = BeautifulSoup(webs[0], 'html.parser')
             quilled_text=quil_content.split('\n\n\n')
             # print("quilled p count:",len(quilled_text))
             # print("quilled_text   ===",quilled_text)

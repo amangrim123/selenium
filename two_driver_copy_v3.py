@@ -262,7 +262,7 @@ def all_process(containt,db):
                         
                         
                     except IndexError:
-                        mycursor2.execute("update bulk_feed_content set content_modify=%s,status=0 where bfc_id=%s", (str(soup),first_word))
+                        mycursor2.execute("update bulk_feed_content set content_modify=%s,status=0 where bfc_id=%s", (str(soup1),first_word))
                         db.commit()
                         print("exception")
                         flag=0
@@ -274,7 +274,7 @@ def all_process(containt,db):
             # print("soup   ===",str(soup))
             print("The End")
             regex = r'({})'.format(r'|'.join(re.escape(w) for w in out_tagaaa))
-            rt = re.sub(regex, find_replacement,(str(soup))) 
+            rt = re.sub(regex, find_replacement,(str(soup1))) 
             res = str(rt)[1:-1]
             # print("resss   ===",str(res))
             if flag==1:

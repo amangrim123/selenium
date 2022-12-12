@@ -213,11 +213,11 @@ def all_process(containt,db):
             driver.switch_to.window(f"{first_word}")
             quil_content = driver.find_element(By.XPATH,'//*[@id="editable-content-within-article"]').text
 
-            mycursor2.execute(f"SELECT * FROM bulk_feed_content where bfc_id={first_word} and status is Null")
+            mycursor2.execute(f"SELECT content FROM bulk_feed_content where bfc_id={first_word} and status is Null")
             
             webs = mycursor2.fetchall()
             # print("containt = ",webs[0])
-            newdata1=remove_non_ascii_2(webs[4])
+            newdata1=remove_non_ascii_2(webs[0][0])
             # print("news = ",newdata1)
             soup1 = BeautifulSoup(newdata1, 'html.parser')
             quilled_text=quil_content.split('\n\n\n')
@@ -343,9 +343,6 @@ if __name__ == "__main__":
     large_containt_list =[]
     print(mycursor.rowcount, "record fetched.")
     for x in alll:
-
-        print("x = ",x)
-        
         newdata=remove_non_ascii_1(x[4] + str(x[0]))
         print("News = ",newdata)
         soup = BeautifulSoup(newdata, 'html.parser')

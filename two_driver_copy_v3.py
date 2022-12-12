@@ -217,8 +217,8 @@ def all_process(containt,db):
             
             webs = mycursor2.fetchall()
             # print("containt = ",webs[0])
-            newdata1=remove_non_ascii_2(webs[0])
-            print("news = ",newdata1)
+            # newdata1=remove_non_ascii_2(webs[0])
+            # print("news = ",newdata1)
             soup1 = BeautifulSoup(webs[0], 'html.parser')
             quilled_text=quil_content.split('\n\n\n')
             # print("quilled p count:",len(quilled_text))

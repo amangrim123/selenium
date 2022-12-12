@@ -158,8 +158,8 @@ def all_process(containt,db):
         #         return False
         #     return True
 
-        async def find_replacement(m):
-            return out_tagaaa[m.group(1)]
+        # async def find_replacement(m):
+        #     return out_tagaaa[m.group(1)]
 
         async def geta(acontaint,driver):
             all_words = acontaint.split()
@@ -245,11 +245,11 @@ def all_process(containt,db):
                 else:
                     out_tagaaa[key] = value
             # print(out_tagaaa)
-            i=-1
-            j=0
+            ia=-1
+            ja=0
             flag=1
             for tag in p:
-                i+=1
+                ia+=1
                 if(tag.name=='p'):
                     if(tag.findParent().name=='blockquote'):
                         continue
@@ -260,8 +260,8 @@ def all_process(containt,db):
                     #newtext=newtext + tag.text + "\n\n\n"
                     #newtext[i]=tag.find(text=True, recursive=False)
                     try:
-                        p[i].string=quilled_text[j]
-                        j+=1
+                        p[ia].string=quilled_text[ja]
+                        ja+=1
                         
                         
                     except IndexError:
@@ -276,12 +276,12 @@ def all_process(containt,db):
             #f.write(str(soup)) 
             # print("soup   ===",str(soup))
             print("The End")
-            regex = r'({})'.format(r'|'.join(re.escape(w) for w in out_tagaaa))
-            rt = re.sub(regex, find_replacement,(str(soup1))) 
-            res = str(rt)[1:-1]
+            # regex = r'({})'.format(r'|'.join(re.escape(w) for w in out_tagaaa))
+            # rt = re.sub(regex, find_replacement,(str(soup1))) 
+            # res = str(rt)[1:-1]
             # print("resss   ===",str(res))
             if flag==1:
-                mycursor2.execute("update bulk_feed_content set content_modify=%s,status=1 where bfc_id=%s", (str(res),first_word))
+                mycursor2.execute("update bulk_feed_content set content_modify=%s,status=1 where bfc_id=%s", (str(soup1),first_word))
                 db.commit()
 
             # quil_file = open(r"a/results"+str(first_word)+".csv",'w')

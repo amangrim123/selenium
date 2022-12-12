@@ -144,12 +144,10 @@ def all_process(containt,db):
 
     quill_login(driver)
 
-    def remove_non_ascii_2(data):
-        return ''.join([i if ord(i) < 128 else ' ' for i in data])
-
-    
-
     async def gather_with_concurrency():
+
+        def remove_non_ascii_2(data):
+            return ''.join([i if ord(i) < 128 else ' ' for i in data])
 
 
         # async def check_exists_by_xpath(xpath,driver):

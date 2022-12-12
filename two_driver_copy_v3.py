@@ -154,7 +154,7 @@ def all_process(containt,db):
         #         return False
         #     return True
 
-        def remove_non_ascii_1(data):
+        async def remove_non_ascii_1(data):
             return ''.join([i if ord(i) < 128 else ' ' for i in data])
 
         async def find_replacement(m):

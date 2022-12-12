@@ -71,15 +71,7 @@ def process_soup(soup):
         print("word count:-",len(str1.split()))
         return str1 
 
-def all_process(containt,soup_containt,db):
-
-    def check_exists_by_xpath(xpath,driver):
-        try:
-            #driver.find_element_by_xpath(xpath)
-            driver.find_element(by=By.XPATH, value=xpath)
-        except:
-            return False
-        return True
+def all_process(containt,db):
 
     def quill_login(driver):
         wp_user = "gh1YcBHVrq"
@@ -145,7 +137,18 @@ def all_process(containt,soup_containt,db):
 
     async def gather_with_concurrency():
 
-        def find_replacement(m):
+        async def check_exists_by_xpath(xpath,driver):
+            try:
+                #driver.find_element_by_xpath(xpath)
+                driver.find_element(by=By.XPATH, value=xpath)
+            except:
+                return False
+            return True
+
+        async def remove_non_ascii_1(data):
+            return ''.join([i if ord(i) < 128 else ' ' for i in data])
+
+        async def find_replacement(m):
             return out_tagaaa[m.group(1)]
 
         async def geta(acontaint,driver):
@@ -193,12 +196,18 @@ def all_process(containt,soup_containt,db):
             # await asyncio.sleep(2)    
 
         await asyncio.gather(*(geta(url,driver) for url in containt))
-        jq = 0
+        mycursor2 = db.cursor()
         for ee in containt:
             all_words = ee.split()
             first_word= all_words[-1]
             driver.switch_to.window(f"{first_word}")
             quil_content = driver.find_element(By.XPATH,'//*[@id="editable-content-within-article"]').text
+
+            mycursor2.execute("SELECT * FROM bulk_feed_content where bfc_id=%s and status is Null ",(first_word))
+            
+            webs = mycursor2.fetchall()
+            newdata1=remove_non_ascii_1(webs)
+            soup1 = BeautifulSoup(newdata, 'html.parser')
             quilled_text=quil_content.split('\n\n\n')
             # print("quilled p count:",len(quilled_text))
             # print("quilled_text   ===",quilled_text)
@@ -210,8 +219,7 @@ def all_process(containt,soup_containt,db):
             out_tagaaa = {}
             key_list=[]
             value_list=[]
-            soup = soup_containt[jq]
-            p=soup.findAll()
+            p=soup1.findAll()
             # print(p)
             jq +=1
             for tag in p:
@@ -245,8 +253,8 @@ def all_process(containt,soup_containt,db):
                         
                         
                     except IndexError:
-                        mycursor.execute("update bulk_feed_content set content_modify=%s,status=0 where bfc_id=%s", (str(soup),x[0]))
-                        mydb.commit()
+                        mycursor2.execute("update bulk_feed_content set content_modify=%s,status=0 where bfc_id=%s", (str(soup),first_word))
+                        db.commit()
                         print("exception")
                         flag=0
                         break
@@ -261,10 +269,7 @@ def all_process(containt,soup_containt,db):
             res = str(rt)[1:-1]
             # print("resss   ===",str(res))
             if flag==1:
-                mycursor.execute("update bulk_feed_content set content_modify=%s,status=1 where bfc_id=%s", (str(res),x[0]))
-                mydb.commit()
-                mycursor1 = db.cursor()
-                mycursor1.execute("update bulk_feed_content set content_modify=%s,status=1 where bfc_id=%s", (str(quil_content),first_word))
+                mycursor2.execute("update bulk_feed_content set content_modify=%s,status=1 where bfc_id=%s", (str(res),first_word))
                 db.commit()
 
             # quil_file = open(r"a/results"+str(first_word)+".csv",'w')
@@ -366,7 +371,7 @@ if __name__ == "__main__":
         start_google = (i12*4)
         end_google = (i12+1)*4
         print(start_google ,"==",end_google)
-        i12 = multiprocessing.Process(target=all_process,args=(containt_list[start_google:end_google],without_quil_containt[start_google:end_google],mydb,)).start()
+        i12 = multiprocessing.Process(target=all_process,args=(containt_list[start_google:end_google],mydb,)).start()
         time.sleep(3)
 
     ###################### For large Containt #############################

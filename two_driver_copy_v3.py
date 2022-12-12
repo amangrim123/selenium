@@ -344,7 +344,6 @@ if __name__ == "__main__":
     print(mycursor.rowcount, "record fetched.")
     for x in alll:
         newdata=remove_non_ascii_1(x[4] + str(x[0]))
-        print("News = ",newdata)
         soup = BeautifulSoup(newdata, 'html.parser')
         
         

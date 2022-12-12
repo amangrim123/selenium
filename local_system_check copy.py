@@ -139,8 +139,8 @@ def all_process(containt,db):
     s = Service(driver_path)
     options = webdriver.ChromeOptions()
     chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
-    driver = webdriver.Chrome(service=s,options=chrome_options) 
-    # driver = webdriver.Chrome(executable_path = 'chromedriver.exe')   
+    # driver = webdriver.Chrome(service=s,options=chrome_options) 
+    driver = webdriver.Chrome(options=chrome_options,executable_path = 'chromedriver.exe')   
 
     quill_login(driver)
 
@@ -212,10 +212,10 @@ def all_process(containt,db):
             driver.switch_to.window(f"{first_word}")
             quil_content = driver.find_element(By.XPATH,'//*[@id="editable-content-within-article"]').text
 
-            mycursor2.execute(f"SELECT content FROM bulk_feed_content where bfc_id={first_word} and status is Null")
+            mycursor2.execute(f"SELECT content FROM bulk_feed_content where bfc_id={first_word} and status is Null")            
             
             webs = mycursor2.fetchall()
-            print("containt = ",webs[0])
+            print(webs[0])
             newdata1=remove_non_ascii_1(webs[0])
             soup1 = BeautifulSoup(newdata1, 'html.parser')
             quilled_text=quil_content.split('\n\n\n')

@@ -233,7 +233,7 @@ def all_process(containt,db):
             value_list=[]
             p=soup1.findAll()
             # print(p)
-            jq +=1
+            # jq +=1
             for tag in p:
                 if(tag.name=="a" and tag.has_attr('href')):
                     value_list.append(str(tag))           

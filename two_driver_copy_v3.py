@@ -212,11 +212,11 @@ def all_process(containt,db):
             driver.switch_to.window(f"{first_word}")
             quil_content = driver.find_element(By.XPATH,'//*[@id="editable-content-within-article"]').text
 
-            mycursor2.execute(f"SELECT content FROM bulk_feed_content where bfc_id={first_word},status is Null")
+            mycursor2.execute(f"SELECT content FROM bulk_feed_content where bfc_id={first_word} and status is Null")
             
             webs = mycursor2.fetchall()
             newdata1=remove_non_ascii_1(webs[0])
-            soup1 = BeautifulSoup(newdata, 'html.parser')
+            soup1 = BeautifulSoup(newdata1, 'html.parser')
             quilled_text=quil_content.split('\n\n\n')
             # print("quilled p count:",len(quilled_text))
             # print("quilled_text   ===",quilled_text)

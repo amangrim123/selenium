@@ -73,6 +73,15 @@ def process_soup(soup):
 
 def all_process(containt,db):
 
+    def check_exists_by_xpath(xpath,driver):
+        try:
+            #driver.find_element_by_xpath(xpath)
+            driver.find_element(by=By.XPATH, value=xpath)
+        except:
+            return False
+        return True
+
+
     def quill_login(driver):
         wp_user = "gh1YcBHVrq"
         wp_pwd = "zd2eW0Aj6F"
@@ -137,13 +146,13 @@ def all_process(containt,db):
 
     async def gather_with_concurrency():
 
-        async def check_exists_by_xpath(xpath,driver):
-            try:
-                #driver.find_element_by_xpath(xpath)
-                driver.find_element(by=By.XPATH, value=xpath)
-            except:
-                return False
-            return True
+        # async def check_exists_by_xpath(xpath,driver):
+        #     try:
+        #         #driver.find_element_by_xpath(xpath)
+        #         driver.find_element(by=By.XPATH, value=xpath)
+        #     except:
+        #         return False
+        #     return True
 
         async def remove_non_ascii_1(data):
             return ''.join([i if ord(i) < 128 else ' ' for i in data])
@@ -339,9 +348,9 @@ if __name__ == "__main__":
         #soup.find_all('p')[-1].decompose()
         ### <figure> Tags
         
-        if (len(soup.split())) < 1100 :
-            without_quil_containt.append(soup)
-            str1=process_soup(soup)
+        
+        str1=process_soup(soup)
+        if (len(str1.split())) < 1000 :            
             containt_list.append(str1 + str(x[0]))
         # else:
         #     large_containt_list.append(str1 + str(x[0]))

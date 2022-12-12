@@ -144,7 +144,13 @@ def all_process(containt,db):
 
     quill_login(driver)
 
+    def remove_non_ascii_2(data):
+        return ''.join([i if ord(i) < 128 else ' ' for i in data])
+
+    
+
     async def gather_with_concurrency():
+
 
         # async def check_exists_by_xpath(xpath,driver):
         #     try:
@@ -153,9 +159,6 @@ def all_process(containt,db):
         #     except:
         #         return False
         #     return True
-
-        async def remove_non_ascii_1(data):
-            return ''.join([i if ord(i) < 128 else ' ' for i in data])
 
         async def find_replacement(m):
             return out_tagaaa[m.group(1)]
@@ -216,7 +219,7 @@ def all_process(containt,db):
             
             webs = mycursor2.fetchall()
             # print("containt = ",webs[0])
-            newdata1=remove_non_ascii_1(webs[0])
+            newdata1=remove_non_ascii_2(webs[0])
             print("news = ",newdata1)
             soup1 = BeautifulSoup(newdata1, 'html.parser')
             quilled_text=quil_content.split('\n\n\n')

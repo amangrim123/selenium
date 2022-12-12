@@ -206,7 +206,7 @@ def all_process(containt,db):
             mycursor2.execute("SELECT * FROM bulk_feed_content where bfc_id=%s and status is Null ",(first_word))
             
             webs = mycursor2.fetchall()
-            newdata1=remove_non_ascii_1(webs)
+            newdata1=remove_non_ascii_1(webs[0])
             soup1 = BeautifulSoup(newdata, 'html.parser')
             quilled_text=quil_content.split('\n\n\n')
             # print("quilled p count:",len(quilled_text))

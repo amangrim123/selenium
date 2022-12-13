@@ -142,6 +142,7 @@ def all_process(containt,db):
     options = webdriver.ChromeOptions()
     chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
     driver = webdriver.Chrome(service=s,options=chrome_options) 
+    time.sleep(1)
     # driver = webdriver.Chrome(executable_path = 'chromedriver.exe')   
 
     quill_login(driver)

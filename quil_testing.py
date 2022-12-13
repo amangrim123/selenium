@@ -91,7 +91,7 @@ def all_process(containt,db):
         quill_pwd = "Grimbyte123."
         delay = 3 # seconds
         try:
-            time.sleep(3)
+            time.sleep(5)
             myElem = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div[2]/div[3]/section[1]/div/div/div/div/div/div[3]/div/div[3]/div/div/input')))
             #print("Page is ready!")
         except TimeoutException:
@@ -387,7 +387,7 @@ if __name__ == "__main__":
         end_google = (i12+1)*4
         print(start_google ,"==",end_google)
         i12 = multiprocessing.Process(target=all_process,args=(containt_list[0:4],mydb,)).start()
-        time.sleep(3)
+        time.sleep(5)
 
     ###################### For large Containt #############################
     # for ii12 in range(int(large_c12)):

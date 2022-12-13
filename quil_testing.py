@@ -91,12 +91,13 @@ def all_process(containt,db):
         quill_pwd = "Grimbyte123."
         delay = 3 # seconds
         try:
+            time.sleep(3)
             myElem = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div[2]/div[3]/section[1]/div/div/div/div/div/div[3]/div/div[3]/div/div/input')))
             #print("Page is ready!")
         except TimeoutException:
             print("1Loading took too much time!")
         #username = driver.find_element_by_xpath("//*[@id='mui-3']")
-        time.sleep(5)
+        time.sleep(3)
         username = driver.find_element(by=By.XPATH, value="/html/body/div[1]/div[2]/div[3]/section[1]/div/div/div/div/div/div[3]/div/div[3]/div/div/input")
         username.clear()
         username.send_keys(quill_user)

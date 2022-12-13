@@ -145,6 +145,7 @@ def all_process(containt,db):
     quill_login(driver)
 
     async def gather_with_concurrency():
+        semaphore = asyncio.Semaphore(10)
 
         def remove_non_ascii_2(data):
             return ''.join([i if ord(i) < 128 else ' ' for i in data])
@@ -162,48 +163,49 @@ def all_process(containt,db):
         #     return out_tagaaa[m.group(1)]
 
         async def geta(acontaint,driver):
-            all_words = acontaint.split()
-            first_word= all_words[-1]
-            print(first_word)
-            acontaint = acontaint.replace(first_word,' ')
-            driver.execute_script(f'''window.open('https://quillbot.com/','{first_word}');''')
-            await asyncio.sleep(5)
+            async with semaphore:
+                all_words = acontaint.split()
+                first_word= all_words[-1]
+                print(first_word)
+                acontaint = acontaint.replace(first_word,' ')
+                driver.execute_script(f'''window.open('https://quillbot.com/','{first_word}');''')
+                await asyncio.sleep(5)
 
-            driver.switch_to.window(f"{first_word}")
-            # time.sleep(1.5)
-            # try:
-            #     driver.find_element(By.XPATH,'/html/body/div[6]/div[3]/div/div[1]/button').click()
-            # except:
-            #     pass 
-            driver.find_element(By.XPATH,'//*[@id="inputText"]').clear()
-            # time.sleep(1.5)
-            # try:
-            #     driver.find_element(By.XPATH,'/html/body/div[6]/div[3]/div/div[1]/button').click()
-            # except:
-            #     pass 
-            driver.find_element(By.XPATH,'//*[@id="inputText"]').send_keys(acontaint)
-            # time.sleep(1.5)
-            # try:
-            #     driver.find_element(By.XPATH,'/html/body/div[6]/div[3]/div/div[1]/button').click()
-            # except:
-            #     pass 
-            
-            driver.find_element(By.XPATH,'//*[@id="InputBottomQuillControl"]/div/div/div/div[2]/div/div/div/div/button').click()
-            # time.sleep(1.5)
-            # try:
-            #     driver.find_element(By.XPATH,'/html/body/div[6]/div[3]/div/div[1]/button').click()
-            # except:
-            #     pass 
-            delay = 30
-            await asyncio.sleep(5)
-            myElem = WebDriverWait(driver,delay).until(EC.presence_of_element_located((By.XPATH, '//*[@id="InputBottomQuillControl"]/div/div/div/div[2]/div/div/div/div/button/div[text()="Rephrase"]')))
-            if myElem:
-                print("yes")
-            #     quil_content = driver.find_element(By.XPATH,'//*[@id="editable-content-within-article"]')
-            #     quil_file = open("results"+str(first_word)+".csv",'w')
-            #     quil_file.write(quil_content.text)
-            #     time.sleep(3)
-            # await asyncio.sleep(2)    
+                driver.switch_to.window(f"{first_word}")
+                # time.sleep(1.5)
+                # try:
+                #     driver.find_element(By.XPATH,'/html/body/div[6]/div[3]/div/div[1]/button').click()
+                # except:
+                #     pass 
+                driver.find_element(By.XPATH,'//*[@id="inputText"]').clear()
+                # time.sleep(1.5)
+                # try:
+                #     driver.find_element(By.XPATH,'/html/body/div[6]/div[3]/div/div[1]/button').click()
+                # except:
+                #     pass 
+                driver.find_element(By.XPATH,'//*[@id="inputText"]').send_keys(acontaint)
+                # time.sleep(1.5)
+                # try:
+                #     driver.find_element(By.XPATH,'/html/body/div[6]/div[3]/div/div[1]/button').click()
+                # except:
+                #     pass 
+                
+                driver.find_element(By.XPATH,'//*[@id="InputBottomQuillControl"]/div/div/div/div[2]/div/div/div/div/button').click()
+                # time.sleep(1.5)
+                # try:
+                #     driver.find_element(By.XPATH,'/html/body/div[6]/div[3]/div/div[1]/button').click()
+                # except:
+                #     pass 
+                delay = 30
+                await asyncio.sleep(5)
+                myElem = WebDriverWait(driver,delay).until(EC.presence_of_element_located((By.XPATH, '//*[@id="InputBottomQuillControl"]/div/div/div/div[2]/div/div/div/div/button/div[text()="Rephrase"]')))
+                if myElem:
+                    print("yes")
+                #     quil_content = driver.find_element(By.XPATH,'//*[@id="editable-content-within-article"]')
+                #     quil_file = open("results"+str(first_word)+".csv",'w')
+                #     quil_file.write(quil_content.text)
+                #     time.sleep(3)
+                # await asyncio.sleep(2)    
 
         await asyncio.gather(*(geta(url,driver) for url in containt))
         mycursor2 = db.cursor()

@@ -97,17 +97,16 @@ def all_process(containt,db):
         except TimeoutException:
             print("1Loading took too much time!")
         #username = driver.find_element_by_xpath("//*[@id='mui-3']")
-        time.sleep(3)
         username = driver.find_element(by=By.XPATH, value="/html/body/div[1]/div[2]/div[3]/section[1]/div/div/div/div/div/div[3]/div/div[3]/div/div/input")
         username.clear()
         username.send_keys(quill_user)
         try:
+            time.sleep(3)
             myElem = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div[2]/div[3]/section[1]/div/div/div/div/div/div[3]/div/div[4]/div/div/input')))
             #print("Page is ready!")
         except TimeoutException:
             print("2Loading took too much time!")
         #password = driver.find_element_by_xpath("//*[@id='mui-4']")
-        time.sleep(3)
         password = driver.find_element(by=By.XPATH, value="/html/body/div[1]/div[2]/div[3]/section[1]/div/div/div/div/div/div[3]/div/div[4]/div/div/input")
         password.clear()
         password.send_keys(quill_pwd)
@@ -142,7 +141,7 @@ def all_process(containt,db):
     options = webdriver.ChromeOptions()
     chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
     driver = webdriver.Chrome(service=s,options=chrome_options) 
-    time.sleep(1)
+    time.sleep(5)
     # driver = webdriver.Chrome(executable_path = 'chromedriver.exe')   
 
     quill_login(driver)

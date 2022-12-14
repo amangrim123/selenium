@@ -113,6 +113,7 @@ def all_process(containt,db):
             password.send_keys(quill_pwd)
         except:
             time.sleep(5)
+            print("wait")
             password = driver.find_element(by=By.XPATH, value="/html/body/div[1]/div[2]/div[3]/section[1]/div/div/div/div/div/div[3]/div/div[4]/div/div/input")
             password.clear()
             password.send_keys(quill_pwd)

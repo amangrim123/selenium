@@ -96,6 +96,8 @@ def all_process(containt,db):
             #print("Page is ready!")
         except TimeoutException:
             print("1Loading took too much time!")
+            myElem = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div[2]/div[3]/section[1]/div/div/div/div/div/div[3]/div/div[3]/div/div/input')))
+            time.sleep(5)
         #username = driver.find_element_by_xpath("//*[@id='mui-3']")
         username = driver.find_element(by=By.XPATH, value="/html/body/div[1]/div[2]/div[3]/section[1]/div/div/div/div/div/div[3]/div/div[3]/div/div/input")
         username.clear()

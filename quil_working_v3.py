@@ -291,7 +291,7 @@ def all_process(containt,db):
 
 
         time.sleep(12)
-        driver.quit()
+    driver.quit()
 
     # asyncio.run(gather_with_concurrency())
     loop = asyncio.get_event_loop()

@@ -283,6 +283,7 @@ def all_process(containt,db):
             if flag==1:
                 mycursor2.execute("update bulk_feed_content set content_modify=%s,status=1 where bfc_id=%s", (str(soup1),first_word))
                 db.commit()
+                print(f"Updata quil data in {first_word}")
             driver.quit()
             # quil_file = open(r"a/results"+str(first_word)+".csv",'w')
             # quil_file.write(quil_content.text)

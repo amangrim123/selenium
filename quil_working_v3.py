@@ -378,7 +378,7 @@ if __name__ == "__main__":
     else:
         large_c12 = large_a12    
 
-    pool = multiprocessing.Pool()
+    # pool = multiprocessing.Pool()
 
     for i12 in range(int(c12)):
         start_google = (i12*4)
@@ -395,7 +395,7 @@ if __name__ == "__main__":
     #     ii12 = multiprocessing.Process(target=all_process,args=(large_containt_list[start_index:end_index],)).start()
     #     time.sleep(1)    
 
-    pool.close()    
+    # pool.close()    
     # p3.join()
     # p4.join()
 

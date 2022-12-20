@@ -10,6 +10,7 @@ import json
 import asyncio
 import re
 import multiprocessing
+import threading
 import time
 import re
 import aiohttp
@@ -383,7 +384,7 @@ if __name__ == "__main__":
         start_google = (i12*4)
         end_google = (i12+1)*4
         print(start_google ,"==",end_google)
-        i12 = multiprocessing.Process(target=all_process,args=(containt_list[start_google:end_google],mydb,)).start()
+        i12 = threading.Thread(target=all_process,args=(containt_list[start_google:end_google],mydb,)).start()
         time.sleep(3)
 
     ###################### For large Containt #############################

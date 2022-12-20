@@ -253,7 +253,9 @@ def all_process(containt,db):
                     except IndexError:
                         mycursor2.execute("update bulk_feed_content set content_modify=%s,status=0 where bfc_id=%s", (str(soup1),first_word))
                         db.commit()
+
                         print("exception")
+                        print("updating in ",first_word)
                         flag=0
                         break
 

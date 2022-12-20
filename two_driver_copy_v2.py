@@ -220,7 +220,7 @@ if __name__ == "__main__":
             host="64.227.176.243",
             user="phpmyadmin",
             password="Possibilities123.@",
-            database="aman"
+            database="aman_work"
         )
 
 

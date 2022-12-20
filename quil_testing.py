@@ -71,9 +71,6 @@ def process_soup(soup):
 
 def all_process(containt,db):
 
-    def remove_non_ascii_1(data):
-        return ''.join([i if ord(i) < 128 else ' ' for i in data])
-
     def check_exists_by_xpath(xpath,driver):
         try:
             #driver.find_element_by_xpath(xpath)
@@ -192,73 +189,14 @@ def all_process(containt,db):
 
         await asyncio.gather(*(geta(url,driver) for url in containt))
 
-        mycursor2 = db.cursor()
         for ee in containt:
             all_words = ee.split()
             first_word= all_words[-1]
             driver.switch_to.window(f"{first_word}")
             quil_content = driver.find_element(By.XPATH,'//*[@id="editable-content-within-article"]').text
-
-            mycursor2.execute(f"SELECT content FROM bulk_feed_content where bfc_id={first_word} and status is Null")
-            
-            webs = mycursor2.fetchall()
-            # print("containt = ",webs[0])
-            newdata1=remove_non_ascii_1(webs[0][0])
-            # print("news = ",newdata1)
-            soup1 = BeautifulSoup(newdata1, 'html.parser')
-            quilled_text=quil_content.split('\n\n\n')
-            # print("quilled p count:",len(quilled_text))
-            # print("quilled_text   ===",quilled_text)
-            # print(type(quilled_text))
-            #print("p count:",len(soup.find_all('p',recursive=False)))
-            #for x in quilled_text:
-            #    i=int(x.split(".",1)[0])
-            #    p[i].string=x.split(".",1)[1]
-            out_tagaaa = {}
-            key_list=[]
-            value_list=[]
-            p=soup1.findAll()
-            # print(p)
-            # jq +=1
-            for tag in p:
-                if(tag.name=="a" and tag.has_attr('href')):
-                    value_list.append(str(tag))           
-                    key_list.append(tag.text)
-            out_tagaaa.clear()
-            for key, value in zip(key_list, value_list):
-                if key=="":
-                    continue
-                else:
-                    out_tagaaa[key] = value
-            # print(out_tagaaa)
-            ia=-1
-            ja=0
-            flag=1
-            for tag in p:
-                ia+=1
-                if(tag.name=='p'):
-                    if(tag.findParent().name=='blockquote'):
-                        continue
-                    if(len(tag.findChildren('p'))>0):
-                        continue
-                    if(tag.text=='' or tag.get_text(strip=True)==''):
-                        continue
-                    #newtext=newtext + tag.text + "\n\n\n"
-                    #newtext[i]=tag.find(text=True, recursive=False)
-                    try:
-                        p[ia].string=quilled_text[ja]
-                        ja+=1
-                        
-                        
-                    except IndexError:
-                        mycursor2.execute("update bulk_feed_content set content_modify=%s,status=0 where bfc_id=%s", (str(soup1),first_word))
-                        db.commit()
-
-                        print("exception")
-                        print("updating in ",first_word)
-                        flag=0
-                        break
-
+            mycursor1 = db.cursor()
+            mycursor1.execute("update bulk_feed_content set content_modify=%s,status=1 where bfc_id=%s", (str(quil_content),first_word))
+            db.commit()
 
             # quil_file = open(r"a/results"+str(first_word)+".csv",'w')
             # quil_file.write(quil_content.text)

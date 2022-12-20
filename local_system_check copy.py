@@ -274,13 +274,14 @@ def all_process(containt,db):
             #f.write(str(soup)) 
             # print("soup   ===",str(soup))
             print("The End")
-            regex = r'({})'.format(r'|'.join(re.escape(w) for w in out_tagaaa))
-            rt = re.sub(regex, find_replacement,(str(soup1))) 
-            res = str(rt)[1:-1]
+            # regex = r'({})'.format(r'|'.join(re.escape(w) for w in out_tagaaa))
+            # rt = re.sub(regex, find_replacement,(str(soup1))) 
+            # res = str(rt)[1:-1]
             # print("resss   ===",str(res))
             if flag==1:
-                mycursor2.execute("update bulk_feed_content set content_modify=%s,status=1 where bfc_id=%s", (str(res),first_word))
+                mycursor2.execute("update bulk_feed_content set content_modify=%s,status=1 where bfc_id=%s", (str(soup1),first_word))
                 db.commit()
+                print(f"Updata quil data in {first_word}")
 
             # quil_file = open(r"a/results"+str(first_word)+".csv",'w')
             # quil_file.write(quil_content.text)
@@ -288,7 +289,7 @@ def all_process(containt,db):
 
 
         time.sleep(12)
-        driver.quit()
+    driver.quit()
 
     # asyncio.run(gather_with_concurrency())
     loop = asyncio.get_event_loop()
@@ -304,7 +305,7 @@ if __name__ == "__main__":
             host="64.227.176.243",
             user="phpmyadmin",
             password="Possibilities123.@",
-            database="aman_database"
+            database="tryyyyy"
         )
 
 

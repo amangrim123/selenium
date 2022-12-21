@@ -89,7 +89,7 @@ def all_process(containt,db):
         driver.get("https://quillbot.com/login")
         quill_user = "rajan@grimbyte.com"
         quill_pwd = "Grimbyte123."
-        delay = 60 # seconds
+        delay = 30 # seconds
         try:
             myElem = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div[2]/div[3]/section[1]/div/div/div/div/div/div[3]/div/div[3]/div/div/input')))
             #print("Page is ready!")

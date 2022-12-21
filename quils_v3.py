@@ -70,6 +70,7 @@ def process_soup(soup):
         return str1 
 
 def all_process(containt,db):
+
     def remove_non_ascii_2(data):
         return ''.join([i if ord(i) < 128 else ' ' for i in data])
 
@@ -88,7 +89,7 @@ def all_process(containt,db):
         driver.get("https://quillbot.com/login")
         quill_user = "rajan@grimbyte.com"
         quill_pwd = "Grimbyte123."
-        delay = 20 # seconds
+        delay = 60 # seconds
         try:
             myElem = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div[2]/div[3]/section[1]/div/div/div/div/div/div[3]/div/div[3]/div/div/input')))
             #print("Page is ready!")
@@ -257,23 +258,27 @@ def all_process(containt,db):
                     except IndexError:
                         mycursor1.execute("update bulk_feed_content set content_modify=%s,status=0 where bfc_id=%s", (str(soup1),first_word))
                         db.commit()
+                        print(f"update in {first_word}")
                         print("exception")
                         flag=0
                         break
-
+                    if flag==1:
+                        mycursor1.execute("update bulk_feed_content set content_modify=%s,status=1 where bfc_id=%s", (str(soup1),first_word))
+                        db.commit()
+                        print(f"Updata quil data in {first_word}")
+                        time.sleep(5)
             #f = open(spinned,"w",encoding='utf-8')
             #with codecs.open(spinned, 'w',encoding="utf-8") as f:
             #f.write(str(soup)) 
-            # print("soup   ===",str(soup))
-            print("The End")
+            # print("soup   ===",str(soup)
 
             # quil_file = open(r"a/results"+str(first_word)+".csv",'w')
             # quil_file.write(quil_content.text)
 
 
 
-        time.sleep(12)
-        driver.quit()
+        
+    driver.quit()
 
     # asyncio.run(gather_with_concurrency())
     loop = asyncio.get_event_loop()

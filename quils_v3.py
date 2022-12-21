@@ -69,7 +69,7 @@ def process_soup(soup):
         print("word count:-",len(str1.split()))
         return str1 
 
-def all_process(containt,db):
+def all_process(containt):
 
     def remove_non_ascii_2(data):
         return ''.join([i if ord(i) < 128 else ' ' for i in data])
@@ -257,16 +257,16 @@ def all_process(containt,db):
                         
                     except IndexError:
                         mycursor1.execute("update bulk_feed_content set content_modify=%s,status=0 where bfc_id=%s", (str(soup1),first_word))
-                        db.commit()
+                        mydb.commit()
                         print(f"update in {first_word}")
                         print("exception")
                         flag=0
                         break
-                    if flag==1:
-                        mycursor1.execute("update bulk_feed_content set content_modify=%s,status=1 where bfc_id=%s", (str(soup1),first_word))
-                        db.commit()
-                        print(f"Updata quil data in {first_word}")
-                        time.sleep(5)
+            if flag==1:
+                mycursor1.execute("update bulk_feed_content set content_modify=%s,status=1 where bfc_id=%s", (str(soup1),first_word))
+                mydb.commit()
+                print(f"Updata quil data in {first_word}")
+                time.sleep(5)
             #f = open(spinned,"w",encoding='utf-8')
             #with codecs.open(spinned, 'w',encoding="utf-8") as f:
             #f.write(str(soup)) 
@@ -371,7 +371,7 @@ if __name__ == "__main__":
         start_google = (i12*4)
         end_google = (i12+1)*4
         print(start_google ,"==",end_google)
-        i12 = multiprocessing.Process(target=all_process,args=(containt_list[start_google:end_google],mydb,)).start()
+        i12 = multiprocessing.Process(target=all_process,args=(containt_list[start_google:end_google],)).start()
         time.sleep(3)
 
     ###################### For large Containt #############################

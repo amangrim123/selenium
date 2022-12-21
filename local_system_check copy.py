@@ -8,10 +8,8 @@ from concurrent.futures.thread import ThreadPoolExecutor
 import time
 import json
 import asyncio
-import re
-import threading
+import multiprocessing
 import time
-import re
 import aiohttp
 import mysql.connector
 from bs4 import BeautifulSoup
@@ -71,7 +69,10 @@ def process_soup(soup):
         print("word count:-",len(str1.split()))
         return str1 
 
-def all_process(containt,db):
+def all_process(containt):
+
+    def remove_non_ascii_2(data):
+        return ''.join([i if ord(i) < 128 else ' ' for i in data])
 
     def check_exists_by_xpath(xpath,driver):
         try:
@@ -81,7 +82,6 @@ def all_process(containt,db):
             return False
         return True
 
-
     def quill_login(driver):
         wp_user = "gh1YcBHVrq"
         wp_pwd = "zd2eW0Aj6F"
@@ -89,9 +89,8 @@ def all_process(containt,db):
         driver.get("https://quillbot.com/login")
         quill_user = "rajan@grimbyte.com"
         quill_pwd = "Grimbyte123."
-        delay = 3 # seconds
+        delay = 30 # seconds
         try:
-            time.sleep(5)
             myElem = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div[2]/div[3]/section[1]/div/div/div/div/div/div[3]/div/div[3]/div/div/input')))
             #print("Page is ready!")
         except TimeoutException:
@@ -101,23 +100,15 @@ def all_process(containt,db):
         username.clear()
         username.send_keys(quill_user)
         try:
-            time.sleep(3)
             myElem = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div[2]/div[3]/section[1]/div/div/div/div/div/div[3]/div/div[4]/div/div/input')))
             #print("Page is ready!")
         except TimeoutException:
             print("2Loading took too much time!")
         #password = driver.find_element_by_xpath("//*[@id='mui-4']")
-        try:
-            password = driver.find_element(by=By.XPATH, value="/html/body/div[1]/div[2]/div[3]/section[1]/div/div/div/div/div/div[3]/div/div[4]/div/div/input")
-            password.clear()
-            password.send_keys(quill_pwd)
-        except:
-            time.sleep(5)
-            print("wait")
-            password = driver.find_element(by=By.XPATH, value="/html/body/div[1]/div[2]/div[3]/section[1]/div/div/div/div/div/div[3]/div/div[4]/div/div/input")
-            password.clear()
-            password.send_keys(quill_pwd)
-
+        time.sleep(3)
+        password = driver.find_element(by=By.XPATH, value="/html/body/div[1]/div[2]/div[3]/section[1]/div/div/div/div/div/div[3]/div/div[4]/div/div/input")
+        password.clear()
+        password.send_keys(quill_pwd)
         #driver.find_element_by_xpath("//*[@id='loginContainer']/div/div[6]/button").click()
         driver.find_element(by=By.XPATH, value="/html/body/div[1]/div[2]/div[3]/section[1]/div/div/div/div/div/div[3]/div/div[5]/button").click()
         #time.sleep(5)
@@ -148,28 +139,12 @@ def all_process(containt,db):
     s = Service(driver_path)
     options = webdriver.ChromeOptions()
     chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
+    # driver = webdriver.Chrome(service=s,options=chrome_options) 
     driver = webdriver.Chrome(options=chrome_options,executable_path = 'chromedriver.exe')   
-    time.sleep(5)
-    # driver = webdriver.Chrome(executable_path = 'chromedriver.exe')   
 
     quill_login(driver)
 
     async def gather_with_concurrency():
-
-        def remove_non_ascii_2(data):
-            return ''.join([i if ord(i) < 128 else ' ' for i in data])
-
-
-        # async def check_exists_by_xpath(xpath,driver):
-        #     try:
-        #         #driver.find_element_by_xpath(xpath)
-        #         driver.find_element(by=By.XPATH, value=xpath)
-        #     except:
-        #         return False
-        #     return True
-
-        # async def find_replacement(m):
-        #     return out_tagaaa[m.group(1)]
 
         async def geta(acontaint,driver):
             all_words = acontaint.split()
@@ -216,91 +191,93 @@ def all_process(containt,db):
             # await asyncio.sleep(2)    
 
         await asyncio.gather(*(geta(url,driver) for url in containt))
-        mycursor2 = db.cursor()
+
+        mydb = mysql.connector.connect (
+            host="64.227.176.243",
+            user="phpmyadmin",
+            password="Possibilities123.@",
+            database="aman_work"
+        )
+
         for ee in containt:
             all_words = ee.split()
             first_word= all_words[-1]
             driver.switch_to.window(f"{first_word}")
-            print("Yes")
-            # quil_content = driver.find_element(By.XPATH,'//*[@id="editable-content-within-article"]').text  
+            quil_content = driver.find_element(By.XPATH,'//*[@id="editable-content-within-article"]').text
+            mycursor1 = mydb.cursor()
+            mycursor1.execute(f"SELECT content FROM bulk_feed_content where bfc_id={first_word} and status is Null")
+            webs = mycursor1.fetchall()
 
-            # mycursor2.execute(f"SELECT content FROM bulk_feed_content where bfc_id={first_word} and status is Null")
-            
-            # webs = mycursor2.fetchall()
-            # # print("containt = ",webs[0])
-            # newdata1=remove_non_ascii_2(webs[0][0])
-            # # print("news = ",newdata1)
-            # soup1 = BeautifulSoup(newdata1, 'html.parser')
-            # quilled_text=quil_content.split('\n\n\n')
-            # # print("quilled p count:",len(quilled_text))
-            # # print("quilled_text   ===",quilled_text)
-            # # print(type(quilled_text))
-            # #print("p count:",len(soup.find_all('p',recursive=False)))
-            # #for x in quilled_text:
-            # #    i=int(x.split(".",1)[0])
-            # #    p[i].string=x.split(".",1)[1]
-            # out_tagaaa = {}
-            # key_list=[]
-            # value_list=[]
-            # p=soup1.findAll()
-            # # print(p)
-            # # jq +=1
-            # for tag in p:
-            #     if(tag.name=="a" and tag.has_attr('href')):
-            #         value_list.append(str(tag))           
-            #         key_list.append(tag.text)
-            # out_tagaaa.clear()
-            # for key, value in zip(key_list, value_list):
-            #     if key=="":
-            #         continue
-            #     else:
-            #         out_tagaaa[key] = value
-            # # print(out_tagaaa)
-            # ia=-1
-            # ja=0
-            # flag=1
-            # for tag in p:
-            #     ia+=1
-            #     if(tag.name=='p'):
-            #         if(tag.findParent().name=='blockquote'):
-            #             continue
-            #         if(len(tag.findChildren('p'))>0):
-            #             continue
-            #         if(tag.text=='' or tag.get_text(strip=True)==''):
-            #             continue
-            #         #newtext=newtext + tag.text + "\n\n\n"
-            #         #newtext[i]=tag.find(text=True, recursive=False)
-            #         try:
-            #             p[ia].string=quilled_text[ja]
-            #             ja+=1
+            newdata1=remove_non_ascii_2(webs[0][0])
+            # print("news = ",newdata1)
+            soup1 = BeautifulSoup(newdata1, 'html.parser')
+            quilled_text=quil_content.split('\n\n\n')
+            # print("quilled p count:",len(quilled_text))
+            # print("quilled_text   ===",quilled_text)
+            # print(type(quilled_text))
+            #print("p count:",len(soup.find_all('p',recursive=False)))
+            #for x in quilled_text:
+            #    i=int(x.split(".",1)[0])
+            #    p[i].string=x.split(".",1)[1]
+            out_tagaaa = {}
+            key_list=[]
+            value_list=[]
+            p=soup1.findAll()
+            # print(p)
+            # jq +=1
+            for tag in p:
+                if(tag.name=="a" and tag.has_attr('href')):
+                    value_list.append(str(tag))           
+                    key_list.append(tag.text)
+            out_tagaaa.clear()
+            for key, value in zip(key_list, value_list):
+                if key=="":
+                    continue
+                else:
+                    out_tagaaa[key] = value
+            # print(out_tagaaa)
+            ia=-1
+            ja=0
+            flag=1
+            for tag in p:
+                ia+=1
+                if(tag.name=='p'):
+                    if(tag.findParent().name=='blockquote'):
+                        continue
+                    if(len(tag.findChildren('p'))>0):
+                        continue
+                    if(tag.text=='' or tag.get_text(strip=True)==''):
+                        continue
+                    #newtext=newtext + tag.text + "\n\n\n"
+                    #newtext[i]=tag.find(text=True, recursive=False)
+                    try:
+                        p[ia].string=quilled_text[ja]
+                        ja+=1
                         
                         
-            #         except IndexError:
-            #             mycursor2.execute("update bulk_feed_content set content_modify=%s,status=0 where bfc_id=%s", (str(soup1),first_word))
-            #             db.commit()
-            #             print("exception")
-            #             flag=0
-            #             break
-
-            # #f = open(spinned,"w",encoding='utf-8')
-            # #with codecs.open(spinned, 'w',encoding="utf-8") as f:
-            # #f.write(str(soup)) 
-            # # print("soup   ===",str(soup))
-            # print("The End")
-            # # regex = r'({})'.format(r'|'.join(re.escape(w) for w in out_tagaaa))
-            # # rt = re.sub(regex, find_replacement,(str(soup1))) 
-            # # res = str(rt)[1:-1]
-            # # print("resss   ===",str(res))
-            # if flag==1:
-            #     mycursor2.execute("update bulk_feed_content set content_modify=%s,status=1 where bfc_id=%s", (str(soup1),first_word))
-            #     db.commit()
+                    except IndexError:
+                        mycursor1.execute("update bulk_feed_content set content_modify=%s,status=0 where bfc_id=%s", (str(soup1),first_word))
+                        mydb.commit()
+                        print(f"update in {first_word}")
+                        print("exception")
+                        flag=0
+                        break
+            if flag==1:
+                mycursor1.execute("update bulk_feed_content set content_modify=%s,status=1 where bfc_id=%s", (str(soup1),first_word))
+                mydb.commit()
+                print(f"Updata quil data in {first_word}")
+                time.sleep(5)
+            #f = open(spinned,"w",encoding='utf-8')
+            #with codecs.open(spinned, 'w',encoding="utf-8") as f:
+            #f.write(str(soup)) 
+            # print("soup   ===",str(soup)
 
             # quil_file = open(r"a/results"+str(first_word)+".csv",'w')
             # quil_file.write(quil_content.text)
 
 
 
-        time.sleep(12)
+        
         driver.quit()
 
     # asyncio.run(gather_with_concurrency())
@@ -317,7 +294,7 @@ if __name__ == "__main__":
             host="64.227.176.243",
             user="phpmyadmin",
             password="Possibilities123.@",
-            database="aman"
+            database="aman_work"
         )
 
 
@@ -349,24 +326,25 @@ if __name__ == "__main__":
         webs = mycursor.fetchall()
         alll.extend(webs)
 
-    without_quil_containt = []
+
     containt_list = []
     large_containt_list =[]
     print(mycursor.rowcount, "record fetched.")
     for x in alll:
-        newdata=remove_non_ascii_1(x[4] + str(x[0]))
-        soup = BeautifulSoup(newdata, 'html.parser')
+        print("type x = ",type(x))
         
+        newdata=remove_non_ascii_1(x[4] + str(x[0]))
+        print("type of newdata = ",type(newdata))
+        soup = BeautifulSoup(newdata, 'html.parser')
         
         #soup.find_all('p')[-1].decompose()
         ### <figure> Tags
-        
-        
+
         str1=process_soup(soup)
-        if (len(str1.split())) < 1000 :            
+        if (len(str1.split())) < 1000 :
             containt_list.append(str1 + str(x[0]))
-        # else:
-        #     large_containt_list.append(str1 + str(x[0]))
+        else:
+            large_containt_list.append(str1 + str(x[0]))
 
     # all_process(containt_list)
 
@@ -387,15 +365,14 @@ if __name__ == "__main__":
     else:
         large_c12 = large_a12    
 
+    # pool = multiprocessing.Pool()
 
-    for i12 in range(1000):
-        print("quil = ",i12)
+    for i12 in range(int(c12)):
         start_google = (i12*4)
         end_google = (i12+1)*4
         print(start_google ,"==",end_google)
-        # all_process(containt_list[0:4],mydb)
-        i12 = threading.Thread(target=all_process,args=(containt_list[0:4],mydb,)).start()
-        time.sleep(5)
+        i12 = multiprocessing.Process(target=all_process,args=(containt_list[start_google:end_google],)).start()
+        time.sleep(3)
 
     ###################### For large Containt #############################
     # for ii12 in range(int(large_c12)):
@@ -404,7 +381,8 @@ if __name__ == "__main__":
     #     print(start_google ,"==",end_google)
     #     ii12 = multiprocessing.Process(target=all_process,args=(large_containt_list[start_index:end_index],)).start()
     #     time.sleep(1)    
-    
+
+    # pool.close()    
     # p3.join()
     # p4.join()
 

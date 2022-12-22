@@ -146,6 +146,9 @@ def all_process(containt):
 
     async def gather_with_concurrency():
 
+        conn = aiohttp.TCPConnector(limit_per_host=100, limit=0, ttl_dns_cache=300)
+        session = aiohttp.ClientSession(connector=conn)
+
         async def geta(acontaint,driver):
             all_words = acontaint.split()
             first_word= all_words[-1]
@@ -283,6 +286,7 @@ def all_process(containt):
     # asyncio.run(gather_with_concurrency())
     loop = asyncio.get_event_loop()
     loop.run_until_complete(gather_with_concurrency())
+    conn.close()
     # conn.close()        
 
 
